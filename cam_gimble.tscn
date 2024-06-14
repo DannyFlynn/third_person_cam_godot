@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://duop3w0o6g01f"]
+
+[ext_resource type="Script" path="res://cam_gimble.gd" id="1_wrk2y"]
+
+[sub_resource type="GDScript" id="GDScript_yluw1"]
+script/source = "extends Camera3D
+
+@export var player : CharacterBody3D
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	if player:
+		global_transform.origin = Vector3(player.position.x, player.position.y + 2, player.position.z + 6)
+		look_at(player.transform.origin)
+	print(player)
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	follow_player()
+	#transform.origin += Vector3(0.01, 0, 0.01)
+	#look_at(player.transform.origin)
+	#follow_player()
+
+		
+		
+func follow_player():
+	if player:
+		global_transform.origin = Vector3(player.position.x, player.position.y + 2, player.position.z + 6)
+		look_at(player.transform.origin)
+
+func cam_rotate():
+	var input_dir := Input.get_vector(\"cam_left\", \"cam_right\", \"cam_up\", \"cam_down\")
+"
+
+[node name="CamGimble" type="Node3D"]
+script = ExtResource("1_wrk2y")
+
+[node name="InnerGimble" type="Node3D" parent="."]
+
+[node name="PlayerCam" type="Camera3D" parent="InnerGimble"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.27135, 4.7237)
+script = SubResource("GDScript_yluw1")
